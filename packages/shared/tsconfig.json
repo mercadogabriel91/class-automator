@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": false,
+    "outDir": "dist",
+    "rootDir": "src",
+    "module": "commonjs", // Make sure it matches NestJS expectations
+    "target": "ES2020"
+  },
+  "include": ["src"]
+}

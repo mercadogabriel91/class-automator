@@ -1,0 +1,22 @@
+{
+  "name": "class-automator",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "version": "1.0.0",
+  "scripts": {
+    "build:backend": "pnpm --filter backend build",
+    "build:frontend": "pnpm --filter frontend build",
+    "dev:frontend": "pnpm --filter frontend dev",
+    "dev:backend": "pnpm --filter backend start:dev",
+    "build": "pnpm build:shared && pnpm build:backend && pnpm build:frontend",
+    "build:shared": "pnpm --filter shared build",
+    "dev": "pnpm run -r --parallel dev"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
