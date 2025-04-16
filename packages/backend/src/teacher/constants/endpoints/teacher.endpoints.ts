@@ -1,7 +1,7 @@
 const TEACHER_ENDPOINTS = {
   BASENAME: 'teacher',
   GET_ALL: 'getall',
-  FIND_ONE: 'findOne',
+  FIND_ONE: 'findone',
 };
 
 export default TEACHER_ENDPOINTS;

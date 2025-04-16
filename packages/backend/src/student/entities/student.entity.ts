@@ -1,5 +1,6 @@
-//import { Optional } from '@nestjs/common';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
+// Entities
+import { Class } from '../../class/entities/class.entity';
 
 @Entity()
 export class Student {
@@ -9,14 +10,9 @@ export class Student {
   @Column()
   name: string;
 
-  //   @Column()
-  //   @Optional()
-  //   email?: string;
-
-  //   @Column()
-  //   @Optional()
-  //   phone?: string;
-
   @Column({ default: true })
   isActive: boolean;
+
+  @ManyToMany(() => Class, (klass) => klass.students)
+  classes: Class[];
 }
