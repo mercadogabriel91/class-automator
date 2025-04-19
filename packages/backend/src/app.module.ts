@@ -7,6 +7,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TeacherModule } from './teacher/teacher.module';
 import { StudentModule } from './student/student.module';
 import { ClassModule } from './class/class.module';
+import { ContentLevelModule } from './content-level/content-level.module';
 //import { hello } from '@class-automator/shared';
 
 @Module({
@@ -29,7 +30,8 @@ import { ClassModule } from './class/class.module';
     }),
     TeacherModule,
     StudentModule,
-    ClassModule
+    ClassModule,
+    ContentLevelModule,
   ],
   controllers: [AppController],
   providers: [AppService],

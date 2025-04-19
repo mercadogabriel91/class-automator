@@ -6,6 +6,7 @@ import {
   Body,
   Param,
   Query,
+  Patch,
 } from '@nestjs/common';
 import { ClassService } from './class.service';
 // Entities
@@ -38,5 +39,10 @@ export class ClassController {
   @Delete(':id')
   remove(@Param('id') id: string): Promise<void> {
     return this.classService.remove(+id);
+  }
+
+  @Patch('advance/')
+  advanceClassLevel(@Query('id') id: string): Promise<Class | string> {
+    return this.classService.advanceToNextLevel(id);
   }
 }

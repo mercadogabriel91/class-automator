@@ -5,6 +5,9 @@ export class ContentLevel {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column({ nullable: true })
+  lessonNumber: number;
+
   @Column('simple-array')
   songs: string[];
 
