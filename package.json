@@ -18,5 +18,8 @@
   },
   "devDependencies": {
     "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "puppeteer-core": "^24.6.1"
   }
 }

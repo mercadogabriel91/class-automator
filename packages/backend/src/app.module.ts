@@ -8,6 +8,7 @@ import { TeacherModule } from './teacher/teacher.module';
 import { StudentModule } from './student/student.module';
 import { ClassModule } from './class/class.module';
 import { ContentLevelModule } from './content-level/content-level.module';
+import { PdfModule } from './pdf/pdf.module';
 //import { hello } from '@class-automator/shared';
 
 @Module({
@@ -32,6 +33,7 @@ import { ContentLevelModule } from './content-level/content-level.module';
     StudentModule,
     ClassModule,
     ContentLevelModule,
+    PdfModule,
   ],
   controllers: [AppController],
   providers: [AppService],

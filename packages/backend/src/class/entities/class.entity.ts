@@ -4,6 +4,7 @@ import {
   ManyToMany,
   ManyToOne,
   JoinTable,
+  Column,
 } from 'typeorm';
 // Entities
 import { Teacher } from 'src/teacher/entities/teacher.entity';
@@ -14,6 +15,12 @@ import { ContentLevel } from 'src/content-level/entities/content-level.entity';
 export class Class {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Column({ nullable: true })
+  name?: string;
+
+  @Column({ default: true })
+  automated: boolean;
 
   @ManyToOne(() => Teacher, (teacher) => teacher.classes)
   teacher: Teacher;
