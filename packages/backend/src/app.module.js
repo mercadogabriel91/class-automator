@@ -7,11 +7,17 @@ import { TeacherModule } from './teacher/teacher.module';
 import { StudentModule } from './student/student.module';
 import { ClassModule } from './class/class.module';
 import { ContentLevelModule } from './content-level/content-level.module';
+import { TaskModule } from './task/task.module';
 console.log(hello);
 @Module({
-    imports: [TeacherModule, StudentModule, ClassModule, ContentLevelModule],
-    controllers: [AppController],
-    providers: [AppService],
+  imports: [
+    TeacherModule,
+    StudentModule,
+    ClassModule,
+    ContentLevelModule,
+    TaskModule,
+  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
-export class AppModule {
-}
+export class AppModule {}

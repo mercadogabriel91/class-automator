@@ -2,11 +2,13 @@ import { Injectable } from '@nestjs/common';
 import * as puppeteer from 'puppeteer';
 import * as fs from 'fs';
 import * as path from 'path';
+// Entities
+import { ContentLevel } from '../content-level/entities/content-level.entity';
 
 @Injectable()
 export class PdfService {
-  async generatePdf(data: any): Promise<{
-    buffer: Buffer | Uint8Array<ArrayBufferLike>;
+  async generatePdf(data: ContentLevel): Promise<{
+    buffer: Uint8Array<ArrayBufferLike>;
     filePath: string;
   }> {
     const { renderToHtml } = await import(

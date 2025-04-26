@@ -1,4 +1,4 @@
-import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 //Services
@@ -8,7 +8,7 @@ import { PdfService } from '../pdf/pdf.service';
 import { Class } from './entities/class.entity';
 
 @Injectable()
-export class ClassService implements OnApplicationBootstrap {
+export class ClassService {
   constructor(
     @InjectRepository(Class)
     private readonly classRepository: Repository<Class>,
@@ -33,9 +33,9 @@ export class ClassService implements OnApplicationBootstrap {
       // }
 
       // 3) Generate lesson plan pdf
-      await this.pdfService.generatePdf({
-        message: `created by teacher id: 67478a61-9cd7-4297-867e-514a7b652986`,
-      });
+      // await this.pdfService.generatePdf({
+      //   message: `created by teacher id: 67478a61-9cd7-4297-867e-514a7b652986`,
+      // });
 
       // 4) Send the lesson plan file
 
@@ -43,11 +43,6 @@ export class ClassService implements OnApplicationBootstrap {
     } catch (error) {
       console.error('Error executing startup task:', error);
     }
-  }
-
-  async onApplicationBootstrap() {
-    // Your startup task goes here
-    await this.runStartupTask();
   }
 
   findAll(): Promise<Class[]> {
@@ -101,9 +96,6 @@ export class ClassService implements OnApplicationBootstrap {
     const nextLevel = await this.contentLevelService.findByLessonNumber(
       currentLesson + 1,
     );
-    // const nextLevel = await this.contentLevelService.findOne({
-    //   where: { lessonNumber: currentLesson + 1 },
-    // });
 
     if (!nextLevel) {
       throw new Error(`No next level found for lesson ${currentLesson + 1}`);
@@ -113,10 +105,17 @@ export class ClassService implements OnApplicationBootstrap {
     return this.classRepository.save(cls);
   }
 
-  async findAllAutomatedClasses(teacherid: string): Promise<Class[]> {
+  async findAllAutomatedClassesByTeacher(teacherid: string): Promise<Class[]> {
     return this.classRepository.find({
       where: { teacher: { id: teacherid }, automated: true },
       relations: ['currentLevel', 'completedLevels'],
+    });
+  }
+
+  async findAllAutomatedClasses(): Promise<Class[]> {
+    return this.classRepository.find({
+      where: { automated: true },
+      relations: ['currentLevel', 'completedLevels', 'teacher'],
     });
   }
 }

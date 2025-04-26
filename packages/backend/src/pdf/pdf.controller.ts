@@ -6,10 +6,10 @@ import { PdfService } from './pdf.service';
 export class PdfController {
   constructor(private readonly pdfService: PdfService) {}
 
-  @Post()
-  async generate(@Res() res): Promise<any> {
-    const { buffer, filePath } = await this.pdfService.generatePdf({
-      message: 'this is some data',
-    });
-  }
+  // @Post()
+  // async generate(@Res() res): Promise<any> {
+  //   const { buffer, filePath } = await this.pdfService.generatePdf({
+  //     message: 'this is some data',
+  //   });
+  // }
 }
