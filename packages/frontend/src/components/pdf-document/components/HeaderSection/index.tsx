@@ -1,7 +1,7 @@
 // components/HeaderSection.tsx
 import React from "react";
 import { Box, Typography } from "@mui/material";
-import LogoSvg from "./Logo";
+import img from "../../../../assets/montessori.png";
 
 const HeaderSection: React.FC = () => {
   return (
@@ -11,17 +11,28 @@ const HeaderSection: React.FC = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        widhth: "100vw",
       }}
     >
-      <Box sx={{ maxWidth: 100, mr: 2 }}>
-        <LogoSvg />
+      <Box sx={{ marginleft: "100px", mr: "5%", ml: "15%" }}>
+        <img src={img} alt="Logo" style={{ width: "130px" }} />
       </Box>
-      <Box>
+      <Box
+        sx={{
+          height: "130px",
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <Typography
-          variant="h4"
+          variant="h5"
           component="h1"
           color="#d9534f"
           fontWeight="bold"
+          sx={{ mb: 2 }}
         >
           English learning plan for this week
         </Typography>

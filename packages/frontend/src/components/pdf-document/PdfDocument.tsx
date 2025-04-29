@@ -1,8 +1,8 @@
 // EnglishLearningPlan.tsx (Main Component)
 import React from "react";
-import { Paper, Box } from "@mui/material";
+import { Paper } from "@mui/material";
 import { ContentLevel } from "../../entities/content-level.entity";
-import HeaderSection from './components/HeaderSection';
+import HeaderSection from "./components/HeaderSection";
 import LearningPlanTable from "./components/LearningPlanTable";
 
 const PdfDocument: React.FC<{ data: ContentLevel }> = ({ data }) => {
@@ -25,7 +25,12 @@ const PdfDocument: React.FC<{ data: ContentLevel }> = ({ data }) => {
   return (
     <Paper
       elevation={3}
-      sx={{ maxWidth: 900, margin: "auto", overflow: "hidden" }}
+      sx={{
+        width: "794px",
+        height: "1123px",
+        margin: "auto",
+        overflow: "hidden",
+      }}
     >
       <HeaderSection />
       <LearningPlanTable data={data} dateRange={dateRange} year={year} />

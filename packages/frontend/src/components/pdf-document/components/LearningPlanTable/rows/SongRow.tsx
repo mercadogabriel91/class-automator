@@ -1,6 +1,6 @@
 // components/rows/SongRow.tsx
 import React from "react";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { TopicCell, ContentCell } from "../../StyledTableCells";
 
 interface SongRowProps {
@@ -10,12 +10,33 @@ interface SongRowProps {
 const SongRow: React.FC<SongRowProps> = ({ songs }) => {
   return (
     <>
-      <TopicCell>Song</TopicCell>
-      <ContentCell>
-        <Typography>Phonic</Typography>
-        <Typography>
-          1.{songs[0]} | {songs[1]}
-        </Typography>
+      <TopicCell
+        sx={{
+          border: "3px solid white",
+          minHeight: "150px",
+        }}
+      >
+        Song
+      </TopicCell>
+      <ContentCell
+        sx={{
+          border: "3px solid white",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography sx={{ fontWeight: "bold" }}>Phonic</Typography>
+          {songs.map((song, index) => (
+            <Typography key={index}>
+              {index + 1}.{song}
+            </Typography>
+          ))}
+        </Box>
       </ContentCell>
     </>
   );

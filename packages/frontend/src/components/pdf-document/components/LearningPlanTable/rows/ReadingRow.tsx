@@ -22,39 +22,59 @@ const ReadingRow: React.FC<ReadingRowProps> = ({ reading }) => {
   const { level, title, titles, image, images } = reading;
 
   return (
-    !!reading && (
-      <tr>
-        <TopicCell>
-          读<br />
-          Reading
-        </TopicCell>
-        <ContentCell>
-          <Grid container spacing={2}>
-            <Grid size={6}>
-              <Typography>
-                RAZ AA level |{" "}
-                {!!titles && titles[0] && titles[0].substring(0, 2)}
-              </Typography>
-            </Grid>
-
-            <Grid size={6} container justifyContent="flex-end">
-              <Box
-                sx={{
-                  width: 80,
-                  height: 100,
-                  bgcolor: "rgba(0,0,0,0.1)",
-                  border: "1px solid #ccc",
-                }}
-              >
-                <Typography variant="caption">
-                  {!!images && images[0]}
-                </Typography>
-              </Box>
-            </Grid>
-          </Grid>
-        </ContentCell>
-      </tr>
-    )
+    <tr>
+      <TopicCell sx={{ border: "3px solid white" }}>
+        读<br />
+        Reading
+      </TopicCell>
+      <ContentCell
+        sx={{ border: "3px solid white", padding: 0, paddingLeft: 3 }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            margin: 0,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            padding: 0,
+          }}
+        >
+          <Box
+            sx={{
+              width: "30%",
+              height: "130px",
+            }}
+          >
+            {images && images[0] && (
+              <img
+                src={`/images/${images[0]}`}
+                alt={images[0]}
+                style={{ height: "100%" }}
+              />
+            )}
+          </Box>
+          <Box sx={{ width: "39.9%", height: "130px" }}>
+            <Typography
+              sx={{
+                fontWeight: "bold",
+              }}
+            >{`${title} - Level: ${level}`}</Typography>
+            {titles.map((ttl, index) => (
+              <Typography key={index}>{ttl}</Typography>
+            ))}
+          </Box>
+          <Box sx={{ width: "30%", height: "130px" }}>
+            {images && images[0] && (
+              <img
+                src={`/images/${images[0]}`}
+                alt={images[0]}
+                style={{ height: "100%" }}
+              />
+            )}
+          </Box>
+        </Box>
+      </ContentCell>
+    </tr>
   );
 };
 

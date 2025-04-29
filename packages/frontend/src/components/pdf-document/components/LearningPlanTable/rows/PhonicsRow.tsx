@@ -1,6 +1,6 @@
 // components/rows/PhonicsRow.tsx
 import React from "react";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { TopicCell, ContentCell } from "../../StyledTableCells";
 
 interface PhonicsRowProps {
@@ -14,40 +14,36 @@ interface PhonicsRowProps {
 
 const PhonicsRow: React.FC<PhonicsRowProps> = ({ phonics }) => {
   return (
-    <tr>
-      <TopicCell>
+    <tr style={{ border: "3px solid white" }}>
+      <TopicCell sx={{ borderRight: "3px solid white" }}>
         语音
         <br />
         Phonics
       </TopicCell>
-      <ContentCell>
-        <Grid container spacing={2}>
-          <Grid size={6}>
-            <Typography>Unit {phonics.unit}</Typography>
-            <Typography>
-              {phonics.letter} {phonics.letter.toLowerCase()}
-            </Typography>
-          </Grid>
-          <Grid size={6} container justifyContent="flex-end">
-            {phonics.pictures.map((pic, index) => (
-              <Box
+      <ContentCell sx={{ height: "25%", padding: 0}}>
+        <Typography
+          variant="h6"
+          sx={{ fontSize: "16px", paddingLeft: "8px", fontWeight: "bold", textAlign: "center" }}
+        >
+          {`${phonics.title} - Unit: ${phonics.unit}`}
+        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            height: "160px",
+            justifyContent: "space-evenly",
+          }}
+        >
+          {phonics.pictures.map((img, index) => (
+            <img
+                src={`/images/${img}`}
+                alt={img}
+                style={{ height: "100%" }}
                 key={index}
-                sx={{
-                  width: 80,
-                  height: 80,
-                  bgcolor: "rgba(0,0,0,0.1)",
-                  border: "1px solid #ccc",
-                  mr: 1,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Typography variant="caption">{pic}</Typography>
-              </Box>
-            ))}
-          </Grid>
-        </Grid>
+              />
+          ))}
+        </Box>
       </ContentCell>
     </tr>
   );

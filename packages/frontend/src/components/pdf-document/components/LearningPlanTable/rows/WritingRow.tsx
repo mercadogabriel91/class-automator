@@ -1,35 +1,35 @@
 // components/rows/WritingRow.tsx
 import React from "react";
-import { Box, Typography } from "@mui/material";
 import { TopicCell, ContentCell } from "../../StyledTableCells";
 
-const WritingRow: React.FC = () => {
+interface WritingRowProps {
+  writing: string[];
+}
+
+const WritingRow: React.FC<WritingRowProps> = ({ writing }) => {
   return (
     <tr>
-      <TopicCell>
+      <TopicCell sx={{ border: "3px solid white" }}>
         写<br />
         Writing
       </TopicCell>
-      <ContentCell>
-        <Box
-          sx={{
-            width: "100%",
-            height: 100,
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <Box
-            sx={{
-              width: 100,
-              height: 100,
-              bgcolor: "rgba(0,0,0,0.1)",
-              border: "1px solid #ccc",
-            }}
-          >
-            <Typography variant="caption">Writing worksheet</Typography>
-          </Box>
-        </Box>
+      <ContentCell
+        sx={{
+          borderRight: "1.5px solid white",
+          padding: 1,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {writing.map((img, index) => (
+          <img
+            src={`/images/${img}`}
+            alt={img}
+            style={{ height: "100%", width: "103px", objectFit: "contain" }}
+            key={index}
+          />
+        ))}
       </ContentCell>
     </tr>
   );
