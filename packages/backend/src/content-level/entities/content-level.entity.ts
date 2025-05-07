@@ -13,19 +13,19 @@ export class ContentLevel {
 
   @Column('jsonb', { nullable: true })
   phonics: {
-    unit?: number;
+    unit: number;
     letter?: string;
-    title?: string;
+    title: string;
     pictures: string[];
   };
 
   @Column('jsonb', { nullable: true })
   reading: {
     level: string;
-    title?: string;
-    titles?: string[];
+    title: string;
+    titles: string[];
     image?: string;
-    images?: string[];
+    images: string[];
   };
 
   @Column('simple-array', { nullable: true })

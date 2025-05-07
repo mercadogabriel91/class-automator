@@ -15,7 +15,7 @@ export class TaskService {
     private readonly classService: ClassService,
   ) {}
 
-  async advanceAllclassesLevel(): Promise<void | any> {
+  async advanceAllclassesLevel(): Promise<string | undefined> {
     const findAllAutomatedClasses: () => Promise<Class[]> = async () => {
       try {
         return await this.classService.findAllAutomatedClasses();
@@ -51,18 +51,37 @@ export class TaskService {
       // const advCls: Class = await advanceClassLevel(cls.id);
       // const { currentLevel } = advCls;
 
-      // /*   ---   3) Generate lesson plan pdf   ---   */
-      // await generatePdfFile(currentLevel);
+      /*   ---   3) Generate lesson plan pdf   ---   */
+      const dummyData: ContentLevel = {
+        id: '8700bb4d-3384-4ceb-ac72-bd4e63d80819',
+        lessonNumber: 2,
+        songs: ['Attack the B point', 'Attack the B point'],
+        phonics: {
+          unit: 2,
+          title: 'Letter B Sounds',
+          letter: 'B',
+          pictures: ['bookSample.png', 'writingSample.png'],
+        },
+        reading: {
+          level: 'B',
+          title: 'RAZ A',
+          images: ['bookSample.png', 'Bophos.png'],
+          titles: ['30. This is my halloween', '31. Halloween houses'],
+          image: 'Bophos.png',
+        },
+        conversations: ['Hello!', 'we are taking the B point'],
+        writing: ['writingSample.png'],
+        vocabulary: ['BBB', 'BBB', 'BBB', 'BBB'],
+      };
+
+      const { filePath } = await generatePdfFile(dummyData);
+
+      return filePath;
 
       // console.log(currentLevel);
     }
 
     try {
-      //   // 3) Generate lesson plan pdf
-      //   await this.pdfService.generatePdf({
-      //     message: `created by teacher id: 67478a61-9cd7-4297-867e-514a7b652986`,
-      //   });
-      // 4) Send the lesson plan file
     } catch (error) {
       console.error('Error executing task:', error);
     }

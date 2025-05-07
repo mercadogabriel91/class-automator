@@ -8,17 +8,15 @@ import {
 import { Type } from 'class-transformer';
 
 class PhonicsDto {
-  @IsOptional()
   @IsNumber()
-  unit?: number;
+  unit: number;
 
   @IsOptional()
   @IsString()
   letter?: string;
 
-  @IsOptional()
   @IsString()
-  title?: string;
+  title: string;
 
   @IsArray()
   @IsString({ each: true })
@@ -29,23 +27,20 @@ class ReadingDto {
   @IsString()
   level: string;
 
-  @IsOptional()
   @IsString()
-  title?: string;
+  title: string;
 
-  @IsOptional()
   @IsArray()
   @IsString({ each: true })
-  titles?: string[];
+  titles: string[];
 
   @IsOptional()
   @IsString()
   image?: string;
 
-  @IsOptional()
   @IsArray()
   @IsString({ each: true })
-  images?: string[];
+  images: string[];
 }
 
 export class CreateContentLevelDto {
@@ -53,12 +48,10 @@ export class CreateContentLevelDto {
   @IsString({ each: true })
   songs: string[];
 
-  @IsOptional()
   @ValidateNested()
   @Type(() => PhonicsDto)
   phonics?: PhonicsDto;
 
-  @IsOptional()
   @ValidateNested()
   @Type(() => ReadingDto)
   reading?: ReadingDto;

@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 //Services
 import { ContentLevelService } from '../content-level/content-level.service';
-import { PdfService } from '../pdf/pdf.service';
 // Entities
 import { Class } from './entities/class.entity';
 
@@ -13,37 +12,7 @@ export class ClassService {
     @InjectRepository(Class)
     private readonly classRepository: Repository<Class>,
     private readonly contentLevelService: ContentLevelService,
-    private readonly pdfService: PdfService,
   ) {}
-
-  private async runStartupTask() {
-    try {
-      // 1) Find all automated classes for specific teacher:
-      // const automatedC: Class[] = await this.findAllAutomatedClasses(
-      //   '67478a61-9cd7-4297-867e-514a7b652986',
-      // );
-
-      // // 2) Level up each automated class
-      // for (const cls of automatedC) {
-      //   try {
-      //     await this.advanceToNextLevel(cls.id);
-      //   } catch (error) {
-      //     console.error(`Error advancing class ${cls.id}:`, error);
-      //   }
-      // }
-
-      // 3) Generate lesson plan pdf
-      // await this.pdfService.generatePdf({
-      //   message: `created by teacher id: 67478a61-9cd7-4297-867e-514a7b652986`,
-      // });
-
-      // 4) Send the lesson plan file
-
-      console.log('Startup task completed successfully');
-    } catch (error) {
-      console.error('Error executing startup task:', error);
-    }
-  }
 
   findAll(): Promise<Class[]> {
     return this.classRepository.find();

@@ -20,6 +20,11 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "puppeteer-core": "^24.6.1"
+    "@emotion/cache": "^11.14.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/server": "^11.11.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/material": "^7.0.2",
+    "puppeteer": "24.8.1"
   }
 }

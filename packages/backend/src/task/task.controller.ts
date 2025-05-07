@@ -6,7 +6,7 @@ export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
   @Post()
-  create(): Promise<void | any> {
+  create(): Promise<string | undefined> {
     return this.taskService.advanceAllclassesLevel();
   }
 }
