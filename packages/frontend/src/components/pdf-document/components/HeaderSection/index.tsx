@@ -36,7 +36,19 @@ const HeaderSection: React.FC = () => {
         >
           English learning plan for this week
         </Typography>
-        <Typography variant="h5" component="h2">
+        <Typography
+          variant="h5"
+          component="h2"
+          sx={{ fontFamily: "Noto Sans CJK SC, PingFang SC, sans-serif" }}
+          data-chinese
+          lang="zh-CN"
+          className="chinese-text"
+          style={{
+            fontFamily: "Noto Sans CJK SC, PingFang SC, sans-serif",
+            userSelect: "text",
+            WebkitUserSelect: "text",
+          }}
+        >
           本周英文学习计划
         </Typography>
       </Box>

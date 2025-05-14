@@ -7,66 +7,169 @@ import { ContentLevel } from '../content-level/entities/content-level.entity';
 
 @Injectable()
 export class PdfService {
+  private readonly puppeteerExecutablePath =
+    process.env.PUPPETEER_EXECUTABLE_PATH;
+  private readonly frontendUrl = process.env.FRONTEND_URL;
+
   async generatePdf(data: ContentLevel): Promise<{
     buffer: Uint8Array<ArrayBufferLike>;
     filePath: string;
   }> {
-    const frontendUrl: string = 'http://localhost:5173';
     try {
-      // Launch headless browser
+      // Launch browser with comprehensive font support
       const browser = await puppeteer.launch({
         headless: true,
-        executablePath:
-          '/Users/gaben/.cache/puppeteer/chrome/mac_arm-136.0.7103.49/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing',
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        executablePath: this.puppeteerExecutablePath,
+        args: [
+          // Font and rendering arguments
+          '--font-render-hinting=none',
+          '--disable-font-subpixel-positioning',
+          '--disable-features=FontPrewarming',
+
+          // International support
+          '--lang=zh-CN',
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+
+          // Additional font rendering flags
+          '--enable-font-antialiasing',
+          '--enable-font-smoothing',
+        ],
+
+        // Enhanced viewport for font clarity
+        defaultViewport: {
+          width: 1600,
+          height: 900,
+          deviceScaleFactor: 2,
+        },
       });
 
       const page = await browser.newPage();
 
-      // Navigate to the PDF view route
-      await page.goto(`${frontendUrl}/pdf-view`, {
-        waitUntil: 'networkidle0',
+      // Set language preferences
+      await page.setExtraHTTPHeaders({
+        'Accept-Language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
+        'Content-Type': 'text/html; charset=utf-8',
       });
 
-      // Inject the data into the page
-      await page.evaluate((injectedData) => {
-        // Set global variable for the frontend
-        window.__PDF_DATA__ = injectedData;
+      // Comprehensive font and character support CSS
+      await page.addStyleTag({
+        content: `
+          /* Comprehensive Font Support */
+          @font-face {
+            font-family: 'Noto Sans CJK SC';
+            src: local('Noto Sans CJK SC Regular'),
+                 local('NotoSansCJKSC-Regular'),
+                 url('https://fonts.gstatic.com/ea/notosanscjksc/v1/NotoSansCJKsc-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+          }
 
-        // Also dispatch an event to notify components
+          body, html {
+            font-family: 
+              'Noto Sans CJK SC', 
+              'PingFang SC', 
+              'Heiti SC', 
+              'Microsoft YaHei', 
+              'Songti SC', 
+              '-apple-system', 
+              'BlinkMacSystemFont', 
+              'Segoe UI', 
+              'Roboto', 
+              'Helvetica', 
+              'Arial', 
+              sans-serif !important;
+            font-feature-settings: 'liga' 1;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+          }
+
+          /* Ensure Chinese characters are rendered */
+          .chinese-text {
+            font-family: 
+              'Noto Sans CJK SC', 
+              'PingFang SC', 
+              'Heiti SC', 
+              'Microsoft YaHei' !important;
+            font-size: 16px !important;
+          }
+
+          /* Force UTF-8 encoding */
+          @charset "UTF-8";
+        `,
+      });
+
+      // Navigate to PDF view with longer timeout
+      await page.goto(`${this.frontendUrl}/pdf-view`, {
+        waitUntil: 'networkidle0',
+        timeout: 60000,
+      });
+
+      // Inject data with UTF-8 encoding safeguards
+      await page.evaluate((injectedData) => {
+        // Ensure proper encoding
+        const encoder = new TextEncoder();
+        const decoder = new TextDecoder('utf-8');
+
+        // Convert data to ensure proper UTF-8 handling
+        const safeData = JSON.parse(
+          decoder.decode(encoder.encode(JSON.stringify(injectedData))),
+        );
+
+        // Set global variable with safe data
+        window.__PDF_DATA__ = safeData;
+
+        // Debug: Log potential Chinese content areas
+        console.log('Injected Data Keys:', Object.keys(safeData));
+
+        // Dispatch event
         document.dispatchEvent(
           new CustomEvent('pdf-data-ready', {
-            detail: injectedData,
+            detail: safeData,
           }),
         );
+
+        // Force Chinese text rendering
+        const chineseElements = document.querySelectorAll(
+          '[lang="zh-CN"], .chinese-text',
+        );
+        chineseElements.forEach((el) => {
+          console.log('Chinese Element Content:', el.textContent);
+          el.classList.add('chinese-text');
+        });
       }, data);
 
-      // Wait for the render-complete signal (or timeout after 10 seconds)
-      try {
-        await page.waitForSelector('#pdf-render-complete', {
-          timeout: 10000,
-        });
-      } catch (e) {
-        console.warn(
-          'Timeout waiting for render complete signal - generating PDF anyway',
-        );
-      }
+      // Enhanced font and content loading wait
+      await page.evaluate(() => {
+        return new Promise<void>((resolve) => {
+          // Wait for fonts to load
+          document.fonts.ready.then(() => {
+            console.log('Fonts loaded completely');
 
-      // Generate PDF
+            // Additional wait to ensure rendering
+            setTimeout(resolve, 3000);
+          });
+        });
+      });
+
+      // Generate PDF with enhanced options
       const pdf = await page.pdf({
         format: 'A4',
         printBackground: true,
+        preferCSSPageSize: true,
         margin: {
-          top: '20mm',
-          right: '20mm',
-          bottom: '20mm',
-          left: '20mm',
+          top: '10mm',
+          right: '10mm',
+          bottom: '10mm',
+          left: '10mm',
         },
+        tagged: true,
+        displayHeaderFooter: false,
       });
 
       await browser.close();
 
-      // Generate a timestamp for the filename
+      // Save PDF
       const timestamp = new Date().toISOString().replace(/:/g, '-');
       const outputPath = path.resolve(
         __dirname,
@@ -74,20 +177,20 @@ export class PdfService {
         `document-${timestamp}.pdf`,
       );
 
-      // Ensure directory exists
+      // Ensure output directory exists
       const outputDir = path.dirname(outputPath);
       if (!fs.existsSync(outputDir)) {
         fs.mkdirSync(outputDir, { recursive: true });
       }
 
-      // Save PDF to file
+      // Write PDF file with UTF-8 encoding
       fs.writeFileSync(outputPath, pdf);
       console.log(`PDF saved to: ${outputPath}`);
 
       return { buffer: pdf, filePath: outputPath };
     } catch (error) {
-      console.error('Error generating PDF:', error);
-      throw new Error(`Failed to generate PDF: ${error.message}`);
+      console.error('Detailed PDF Generation Error:', error);
+      throw new Error(`Comprehensive PDF Generation Failure: ${error.message}`);
     }
   }
 }

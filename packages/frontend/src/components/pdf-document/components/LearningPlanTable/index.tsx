@@ -38,23 +38,59 @@ const LearningPlanTable: React.FC<LearningPlanTableProps> = ({
         <Table>
           <TableHead>
             <TableRow>
-              <HeaderCell>
+              <HeaderCell
+                data-chinese
+                lang="zh-CN"
+                className="chinese-text"
+                style={{
+                  fontFamily: "Noto Sans CJK SC, PingFang SC, sans-serif",
+                  userSelect: "text",
+                  WebkitUserSelect: "text",
+                }}
+              >
                 时间
                 <br />
                 Time
               </HeaderCell>
-              <HeaderCell>
+              <HeaderCell
+                data-chinese
+                lang="zh-CN"
+                className="chinese-text"
+                style={{
+                  fontFamily: "Noto Sans CJK SC, PingFang SC, sans-serif",
+                  userSelect: "text",
+                  WebkitUserSelect: "text",
+                }}
+              >
                 第 周<br />
                 Week
               </HeaderCell>
-              <HeaderCell>
+              <HeaderCell
+                data-chinese
+                lang="zh-CN"
+                className="chinese-text"
+                style={{
+                  fontFamily: "Noto Sans CJK SC, PingFang SC, sans-serif",
+                  userSelect: "text",
+                  WebkitUserSelect: "text",
+                }}
+              >
                 主题
                 <br />
                 Topic
                 <br />
                 歌曲
               </HeaderCell>
-              <HeaderCell>
+              <HeaderCell
+                data-chinese
+                lang="zh-CN"
+                className="chinese-text"
+                style={{
+                  fontFamily: "Noto Sans CJK SC, PingFang SC, sans-serif",
+                  userSelect: "text",
+                  WebkitUserSelect: "text",
+                }}
+              >
                 内容
                 <br />
                 Contents
@@ -67,12 +103,32 @@ const LearningPlanTable: React.FC<LearningPlanTableProps> = ({
                 height: "150px",
               }}
             >
-              <TimeCell rowSpan={6}>
+              <TimeCell
+                rowSpan={6}
+                data-chinese
+                lang="zh-CN"
+                className="chinese-text"
+                style={{
+                  fontFamily: "Noto Sans CJK SC, PingFang SC, sans-serif",
+                  userSelect: "text",
+                  WebkitUserSelect: "text",
+                }}
+              >
                 {dateRange}
                 <br />
                 {year} 年
               </TimeCell>
-              <WeekCell rowSpan={6}>
+              <WeekCell
+                rowSpan={6}
+                data-chinese
+                lang="zh-CN"
+                className="chinese-text"
+                style={{
+                  fontFamily: "Noto Sans CJK SC, PingFang SC, sans-serif",
+                  userSelect: "text",
+                  WebkitUserSelect: "text",
+                }}
+              >
                 第二周
                 <br />
                 Week {data.lessonNumber}

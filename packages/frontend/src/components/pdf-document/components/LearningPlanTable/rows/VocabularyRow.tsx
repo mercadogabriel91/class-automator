@@ -10,14 +10,24 @@ interface VocabularyRowProps {
 const VocabularyRow: React.FC<VocabularyRowProps> = ({ vocabulary }) => {
   return (
     <tr>
-      <TopicCell sx={{ border: "3px solid white", height: "90px" }}>
+      <TopicCell
+        sx={{ border: "3px solid white", height: "90px" }}
+        data-chinese
+        lang="zh-CN"
+        className="chinese-text"
+        style={{
+          fontFamily: "Noto Sans CJK SC, PingFang SC, sans-serif",
+          userSelect: "text",
+          WebkitUserSelect: "text",
+        }}
+      >
         单词
         <br />
         Vocabulary
       </TopicCell>
-      <ContentCell sx={{ border: "3px solid white", textAlign: 'center' }}>
+      <ContentCell sx={{ border: "3px solid white", textAlign: "center" }}>
         <Typography sx={{ fontWeight: "bold" }}>
-          {vocabulary.join(" | ")}
+          {vocabulary && vocabulary.join(" | ")}
         </Typography>
       </ContentCell>
     </tr>

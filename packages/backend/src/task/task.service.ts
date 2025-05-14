@@ -57,21 +57,20 @@ export class TaskService {
         lessonNumber: 2,
         songs: ['Attack the B point', 'Attack the B point'],
         phonics: {
-          unit: 2,
+          unit: 1,
           title: 'Letter B Sounds',
           letter: 'B',
-          pictures: ['bookSample.png', 'writingSample.png'],
+          pictures: ['oxford-lvl-1/page_7.png', 'oxford-lvl-1/page_7.png'],
         },
         reading: {
           level: 'B',
           title: 'RAZ A',
-          images: ['bookSample.png', 'Bophos.png'],
-          titles: ['30. This is my halloween', '31. Halloween houses'],
-          image: 'Bophos.png',
+          images: ['oxford-lvl-1/page_7.png', 'oxford-lvl-1/page_5.png'],
+          titles: ['The banking', 'Big bang'],
         },
         conversations: ['Hello!', 'we are taking the B point'],
-        writing: ['writingSample.png'],
-        vocabulary: ['BBB', 'BBB', 'BBB', 'BBB'],
+        writing: ['oxford-lvl-1/page_9.png', 'oxford-lvl-1/page_13.png'],
+        vocabulary: ['Bapple', 'Banana', 'Bcat'],
       };
 
       const { filePath } = await generatePdfFile(dummyData);

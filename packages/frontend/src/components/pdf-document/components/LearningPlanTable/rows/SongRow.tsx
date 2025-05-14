@@ -31,11 +31,12 @@ const SongRow: React.FC<SongRowProps> = ({ songs }) => {
           }}
         >
           <Typography sx={{ fontWeight: "bold" }}>Phonic</Typography>
-          {songs.map((song, index) => (
-            <Typography key={index}>
-              {index + 1}.{song}
-            </Typography>
-          ))}
+          {!!songs &&
+            songs.map((song, index) => (
+              <Typography key={index}>
+                {index + 1}.{song}
+              </Typography>
+            ))}
         </Box>
       </ContentCell>
     </>

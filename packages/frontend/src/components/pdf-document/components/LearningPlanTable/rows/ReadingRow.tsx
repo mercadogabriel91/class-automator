@@ -1,7 +1,6 @@
 // components/rows/ReadingRow.tsx
 import React from "react";
 import { Box, Typography } from "@mui/material";
-import Grid from "@mui/material/Grid";
 import { TopicCell, ContentCell } from "../../StyledTableCells";
 
 interface ReadingRowProps {
@@ -9,7 +8,7 @@ interface ReadingRowProps {
     level: string;
     title: string;
     titles: string[];
-    image: string;
+    image?: string;
     images: string[];
   };
 }
@@ -19,11 +18,21 @@ const ReadingRow: React.FC<ReadingRowProps> = ({ reading }) => {
     return null;
   }
 
-  const { level, title, titles, image, images } = reading;
+  const { level, title, titles, images } = reading;
 
   return (
     <tr>
-      <TopicCell sx={{ border: "3px solid white" }}>
+      <TopicCell
+        sx={{ border: "3px solid white" }}
+        data-chinese
+        lang="zh-CN"
+        className="chinese-text"
+        style={{
+          fontFamily: "Noto Sans CJK SC, PingFang SC, sans-serif",
+          userSelect: "text",
+          WebkitUserSelect: "text",
+        }}
+      >
         读<br />
         Reading
       </TopicCell>
@@ -64,10 +73,10 @@ const ReadingRow: React.FC<ReadingRowProps> = ({ reading }) => {
             ))}
           </Box>
           <Box sx={{ width: "30%", height: "130px" }}>
-            {images && images[0] && (
+            {images && images[1] && (
               <img
-                src={`/images/${images[0]}`}
-                alt={images[0]}
+                src={`/images/${images[1]}`}
+                alt={images[1]}
                 style={{ height: "100%" }}
               />
             )}

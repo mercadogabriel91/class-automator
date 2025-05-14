@@ -16,7 +16,7 @@ export type ContentLevel = {
     level: string;
     title: string;
     titles: string[];
-    image: string;
+    image?: string;
     images: string[];
   };
 
