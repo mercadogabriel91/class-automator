@@ -16,18 +16,6 @@ import { Class } from './entities/class.entity';
 export class ClassController {
   constructor(private readonly classService: ClassService) {}
 
-  @Get('/trigger-endpoint')
-  async handleTrigger(): Promise<string> {
-    console.log('Trigger endpoint hit');
-    return 'Triggered!';
-  }
-
-  @Get('/health')
-  health() {
-    console.log('health endpoint hit');
-    return 'ok';
-  }
-
   @Get('getall')
   findAll(): Promise<Class[]> {
     return this.classService.findAll();

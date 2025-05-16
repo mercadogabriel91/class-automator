@@ -10,7 +10,6 @@ import { ClassModule } from './class/class.module';
 import { ContentLevelModule } from './content-level/content-level.module';
 import { PdfModule } from './pdf/pdf.module';
 import { TaskModule } from './task/task.module';
-//import { hello } from '@class-automator/shared';
 
 @Module({
   imports: [
@@ -26,7 +25,6 @@ import { TaskModule } from './task/task.module';
         password: configService.get('DATABASE_PASSWORD'),
         database: configService.get('DATABASE_NAME'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        // synchronize: process.env.NODE_ENV !== 'production',
         synchronize: true,
       }),
     }),
@@ -35,7 +33,7 @@ import { TaskModule } from './task/task.module';
     ClassModule,
     ContentLevelModule,
     PdfModule,
-    TaskModule
+    TaskModule,
   ],
   controllers: [AppController],
   providers: [AppService],

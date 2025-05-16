@@ -18,8 +18,12 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "run:task": "concurrently -k -s first -n \"API,TRIGGER\" -c \"blue,green\" \"pnpm run start\" \"pnpm run trigger:task\"",
-    "trigger:task": "wait-on http://localhost:3000/class/health && curl http://localhost:3000/class/trigger-endpoint && kill $(lsof -t -i:3000)"
+    "start:frontend": "pnpm --filter frontend run dev",
+    "wait:api": "wait-on -t 60000 -i 1000 -v http://localhost:3000/",
+    "wait:frontend": "wait-on -t 120000 -i 1000 -v http://localhost:5173/",
+    "trigger:task": "curl http://localhost:3000/task/",
+    "cleanup": "bash -c 'for port in 3000 5173; do PID=$(lsof -ti :$port); if [ -n \"$PID\" ]; then kill -9 $PID && echo \"Killed process $PID on port $port\"; else echo \"No process on port $port\"; fi; done'",
+    "run:task": "pnpm run cleanup && concurrently --names \"API,FRONTEND\" --prefix-colors \"blue,cyan\" --kill-others \"pnpm run start\" \"pnpm run start:frontend\" & sleep 5 && pnpm run wait:api && pnpm run wait:frontend && pnpm run trigger:task && pnpm run cleanup"
   },
   "dependencies": {
     "@class-automator/shared": "workspace:*",

@@ -14,7 +14,8 @@
     "dev:backend": "pnpm --filter backend start:dev",
     "build": "pnpm build:shared && pnpm build:backend && pnpm build:frontend",
     "build:shared": "pnpm --filter shared build",
-    "dev": "pnpm run -r --parallel dev"
+    "dev": "pnpm run -r --parallel dev",
+    "run:task":"pnpm --filter backend run run:task"
   },
   "devDependencies": {
     "typescript": "^5.0.0"

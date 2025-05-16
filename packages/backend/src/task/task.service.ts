@@ -1,21 +1,20 @@
 import { Injectable } from '@nestjs/common';
 // Services
-import { ContentLevelService } from '../content-level/content-level.service';
 import { PdfService } from '../pdf/pdf.service';
 import { ClassService } from '../class/class.service';
 // Entities
 import { Class } from '../class/entities/class.entity';
 import { ContentLevel } from '../content-level/entities/content-level.entity';
+import { AdvanceLevelResponse } from './entities/task-classes';
 
 @Injectable()
 export class TaskService {
   constructor(
-    private readonly contentLevelService: ContentLevelService,
     private readonly pdfService: PdfService,
     private readonly classService: ClassService,
   ) {}
 
-  async advanceAllclassesLevel(): Promise<string | undefined> {
+  async advanceAllclassesLevel(): Promise<AdvanceLevelResponse | undefined | any> {
     const findAllAutomatedClasses: () => Promise<Class[]> = async () => {
       try {
         return await this.classService.findAllAutomatedClasses();
@@ -32,10 +31,9 @@ export class TaskService {
       }
     };
 
-    const generatePdfFile: (currentLevel: ContentLevel) => Promise<{
-      buffer: Uint8Array<ArrayBufferLike>;
-      filePath: string;
-    }> = async (currentLevel: ContentLevel) => {
+    const generatePdfFile: (
+      currentLevel: ContentLevel,
+    ) => Promise<AdvanceLevelResponse> = async (currentLevel: ContentLevel) => {
       try {
         return await this.pdfService.generatePdf(currentLevel);
       } catch (error) {
@@ -52,32 +50,7 @@ export class TaskService {
       // const { currentLevel } = advCls;
 
       /*   ---   3) Generate lesson plan pdf   ---   */
-      const dummyData: ContentLevel = {
-        id: '8700bb4d-3384-4ceb-ac72-bd4e63d80819',
-        lessonNumber: 2,
-        songs: ['Attack the B point', 'Attack the B point'],
-        phonics: {
-          unit: 1,
-          title: 'Letter B Sounds',
-          letter: 'B',
-          pictures: ['oxford-lvl-1/page_7.png', 'oxford-lvl-1/page_7.png'],
-        },
-        reading: {
-          level: 'B',
-          title: 'RAZ A',
-          images: ['oxford-lvl-1/page_7.png', 'oxford-lvl-1/page_5.png'],
-          titles: ['The banking', 'Big bang'],
-        },
-        conversations: ['Hello!', 'we are taking the B point'],
-        writing: ['oxford-lvl-1/page_9.png', 'oxford-lvl-1/page_13.png'],
-        vocabulary: ['Bapple', 'Banana', 'Bcat'],
-      };
-
-      const { filePath } = await generatePdfFile(dummyData);
-
-      return filePath;
-
-      // console.log(currentLevel);
+      (await generatePdfFile(cls.currentLevel)).filePath;
     }
 
     try {

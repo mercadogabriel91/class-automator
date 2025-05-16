@@ -4,6 +4,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 // Entities
 import { ContentLevel } from '../content-level/entities/content-level.entity';
+import { AdvanceLevelResponse } from '../task/entities/task-classes';
 
 @Injectable()
 export class PdfService {
@@ -11,10 +12,7 @@ export class PdfService {
     process.env.PUPPETEER_EXECUTABLE_PATH;
   private readonly frontendUrl = process.env.FRONTEND_URL;
 
-  async generatePdf(data: ContentLevel): Promise<{
-    buffer: Uint8Array<ArrayBufferLike>;
-    filePath: string;
-  }> {
+  async generatePdf(data: ContentLevel): Promise<AdvanceLevelResponse> {
     try {
       // Launch browser with comprehensive font support
       const browser = await puppeteer.launch({

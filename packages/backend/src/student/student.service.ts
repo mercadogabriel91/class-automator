@@ -21,8 +21,8 @@ export class StudentService {
 
   async create(body): Promise<Student[]> {
     const { student } = body;
-    const newTeacher = this.studentRepository.create(student);
-    return this.studentRepository.save(newTeacher);
+    const newStudent = this.studentRepository.create(student);
+    return this.studentRepository.save(newStudent);
   }
 
   async remove(id: number): Promise<void> {

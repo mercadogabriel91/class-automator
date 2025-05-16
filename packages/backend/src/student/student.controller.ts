@@ -10,17 +10,19 @@ import {
 import { StudentService } from './student.service';
 // Entities
 import { Student } from './entities/student.entity';
+// Constants
+import STUDENT_ENDPOINTS from './constants/endpoints/student.endpoints';
 
-@Controller('student')
+@Controller(STUDENT_ENDPOINTS.BASENAME)
 export class StudentController {
   constructor(private readonly studentService: StudentService) {}
 
-  @Get('getall')
+  @Get(STUDENT_ENDPOINTS.GET_ALL)
   findAll(): Promise<Student[]> {
     return this.studentService.findAll();
   }
 
-  @Get('findone')
+  @Get(STUDENT_ENDPOINTS.FIND_ONE)
   findOne(@Query('id') id: string): Promise<Student | null> {
     return this.studentService.findOne(id);
   }
