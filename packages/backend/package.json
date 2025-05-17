@@ -21,7 +21,7 @@
     "start:frontend": "pnpm --filter frontend run dev",
     "wait:api": "wait-on -t 60000 -i 1000 -v http://localhost:3000/",
     "wait:frontend": "wait-on -t 120000 -i 1000 -v http://localhost:5173/",
-    "trigger:task": "curl http://localhost:3000/task/",
+    "trigger:task": "curl -X POST http://localhost:3000/task/",
     "cleanup": "bash -c 'for port in 3000 5173; do PID=$(lsof -ti :$port); if [ -n \"$PID\" ]; then kill -9 $PID && echo \"Killed process $PID on port $port\"; else echo \"No process on port $port\"; fi; done'",
     "run:task": "pnpm run cleanup && concurrently --names \"API,FRONTEND\" --prefix-colors \"blue,cyan\" --kill-others \"pnpm run start\" \"pnpm run start:frontend\" & sleep 5 && pnpm run wait:api && pnpm run wait:frontend && pnpm run trigger:task && pnpm run cleanup"
   },

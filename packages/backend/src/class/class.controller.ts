@@ -11,22 +11,24 @@ import {
 import { ClassService } from './class.service';
 // Entities
 import { Class } from './entities/class.entity';
+// Constants
+import CLASS_ENDPOINTS from './constants/endpoints/class.endpoints';
 
-@Controller('class')
+@Controller(CLASS_ENDPOINTS.BASENAME)
 export class ClassController {
   constructor(private readonly classService: ClassService) {}
 
-  @Get('getall')
+  @Get(CLASS_ENDPOINTS.GET_ALL)
   findAll(): Promise<Class[]> {
     return this.classService.findAll();
   }
 
-  @Get('findone')
+  @Get(CLASS_ENDPOINTS.FIND_ONE)
   findOne(@Query('id') id: string): Promise<Class | null> {
     return this.classService.findOne(id);
   }
 
-  @Get('getclassinfo')
+  @Get(CLASS_ENDPOINTS.GET_CLASS_INFO)
   getClassInfo(@Query('id') id: string): Promise<Class | null> {
     return this.classService.getClassInfo(id);
   }
@@ -41,7 +43,7 @@ export class ClassController {
     return this.classService.remove(+id);
   }
 
-  @Patch('advance/')
+  @Patch(CLASS_ENDPOINTS.ADVANCE)
   advanceClassLevel(@Query('id') id: string): Promise<Class | string> {
     return this.classService.advanceToNextLevel(id);
   }

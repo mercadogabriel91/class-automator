@@ -12,17 +12,19 @@ import { ContentLevelService } from './content-level.service';
 // Entities
 import { ContentLevel } from './entities/content-level.entity';
 import { CreateContentLevelDto } from './entities/dto/create-content-level.dto';
+// Constants
+import CONTENT_LEVEL_ENDPOINTS from './constants/endpoints/content-level.endpoints';
 
-@Controller('content-level')
+@Controller(CONTENT_LEVEL_ENDPOINTS.BASENAME)
 export class ContentLevelController {
   constructor(private readonly contentLevelService: ContentLevelService) {}
 
-  @Get('getall')
+  @Get(CONTENT_LEVEL_ENDPOINTS.GET_ALL)
   findAll(): Promise<ContentLevel[]> {
     return this.contentLevelService.findAll();
   }
 
-  @Get('findone')
+  @Get(CONTENT_LEVEL_ENDPOINTS.FIND_ONE)
   findOne(@Query('id') id: string): Promise<ContentLevel | null> {
     return this.contentLevelService.findOne(id);
   }

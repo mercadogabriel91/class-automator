@@ -1,14 +1,16 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Post } from '@nestjs/common';
+// Entities
 import { TaskService } from './task.service';
 import { AdvanceLevelResponse } from './entities/task-classes';
+// Constants
+import TASK_ENDPOINTS from './constants/endpoints/task.endpoints';
 
-@Controller('task')
+@Controller(TASK_ENDPOINTS.BASENAME)
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
-  // @Post()
-  @Get()
-  create(): Promise<AdvanceLevelResponse | undefined> {
+  @Post()
+  create(): Promise<AdvanceLevelResponse | undefined | string> {
     return this.taskService.advanceAllclassesLevel();
   }
 }

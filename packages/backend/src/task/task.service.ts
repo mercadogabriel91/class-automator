@@ -14,7 +14,9 @@ export class TaskService {
     private readonly classService: ClassService,
   ) {}
 
-  async advanceAllclassesLevel(): Promise<AdvanceLevelResponse | undefined | any> {
+  async advanceAllclassesLevel(): Promise<
+    AdvanceLevelResponse | undefined | string
+  > {
     const findAllAutomatedClasses: () => Promise<Class[]> = async () => {
       try {
         return await this.classService.findAllAutomatedClasses();
@@ -46,11 +48,12 @@ export class TaskService {
 
     for (const cls of automatedC) {
       /*   ---   2) Advance each class to the next level   ---   */
-      // const advCls: Class = await advanceClassLevel(cls.id);
-      // const { currentLevel } = advCls;
+      const advCls: Class = await advanceClassLevel(cls.id);
+      const { currentLevel } = advCls;
 
       /*   ---   3) Generate lesson plan pdf   ---   */
-      (await generatePdfFile(cls.currentLevel)).filePath;
+      const { filePath } = await generatePdfFile(currentLevel);
+      return filePath;
     }
 
     try {
