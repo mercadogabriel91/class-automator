@@ -48,11 +48,11 @@ export class TaskService {
 
     for (const cls of automatedC) {
       /*   ---   2) Advance each class to the next level   ---   */
-      const advCls: Class = await advanceClassLevel(cls.id);
-      const { currentLevel } = advCls;
+      // const advCls: Class = await advanceClassLevel(cls.id);
+      // const { currentLevel } = advCls;
 
       /*   ---   3) Generate lesson plan pdf   ---   */
-      const { filePath } = await generatePdfFile(currentLevel);
+      const { filePath } = await generatePdfFile(cls.currentLevel);
       return filePath;
     }
 

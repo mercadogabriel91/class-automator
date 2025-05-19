@@ -1,15 +1,31 @@
 import { NestFactory } from '@nestjs/core';
-import { INestApplicationContext, INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   /*
-   * Enable the following code to get app context if you need to just run a task and exit
-   * const app: INestApplicationContext = await NestFactory.createApplicationContext(AppModule);
-   * Close the application context once finished
-   * await app.close();
+   * Create a new Nest application instance
    */
   const app: INestApplication = await NestFactory.create(AppModule);
+
+  /*
+   *  Apply global pipes for validation
+   */
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
+
+  /*
+   *  Set up Swagger for API documentation
+   */
+  const config = new DocumentBuilder()
+    .setTitle('Class Automator API')
+    .setDescription('API documentation for Class Automator')
+    .setVersion('1.0')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
+
   await app.listen(process.env.PORT ?? 3000);
 }
 
