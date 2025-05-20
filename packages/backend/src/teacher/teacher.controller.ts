@@ -37,7 +37,7 @@ export class TeacherController {
     return this.teacherService.findAll();
   }
 
-  @ApiOperation({ summary: 'find a new teacher' })
+  @ApiOperation({ summary: 'find a teacher' })
   @ApiResponse({
     status: 200,
     description: 'Teacher found.',

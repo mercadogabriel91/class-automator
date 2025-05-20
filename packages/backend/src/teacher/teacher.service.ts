@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, DeleteResult } from 'typeorm';
+import { Repository } from 'typeorm';
 // Entities
 import { Teacher } from './entities/teacher.entity';
 import { CreateTeacherDto } from './entities/dto/create.teacher.dto';
