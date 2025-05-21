@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 // Entities
@@ -31,5 +31,21 @@ export class ContentLevelService {
 
   async findByLessonNumber(lessonNumber: number) {
     return this.contentLevelRepository.findOneBy({ lessonNumber });
+  }
+
+  async findByIds(ids: string[]): Promise<ContentLevel[]> {
+    const contentLevelsList: ContentLevel[] = [];
+    for (const id of ids) {
+      const contentLevel = await this.contentLevelRepository.findOne({
+        where: { id },
+      });
+
+      if (!contentLevel) {
+        throw new NotFoundException(`ContentLevel with ID "${id}" not found`);
+      }
+
+      contentLevelsList.push(contentLevel);
+    }
+    return contentLevelsList;
   }
 }

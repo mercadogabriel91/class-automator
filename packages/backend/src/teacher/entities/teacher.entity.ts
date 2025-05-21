@@ -17,7 +17,7 @@ export class Teacher {
   @ApiProperty({ description: "Teacher's email" })
   @Column({ nullable: true })
   @Optional()
-  email?: string;
+  email: string;
 
   @ApiProperty({ description: "Teacher's email" })
   @Column({ nullable: true })

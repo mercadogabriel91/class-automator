@@ -17,7 +17,7 @@ export class Class {
   id: string;
 
   @Column({ nullable: true })
-  name?: string;
+  name: string;
 
   @Column({ default: true })
   automated: boolean;

@@ -1,10 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 //Services
 import { ContentLevelService } from '../content-level/content-level.service';
+import { TeacherService } from '../teacher/teacher.service';
+import { StudentService } from '../student/student.service';
 // Entities
 import { Class } from './entities/class.entity';
+import { FindClassInformationResponseDto } from './entities/dto/common.class.dto';
+import { CreateClassDto } from './entities/dto/create-class.dto';
+import { ClassResponseDto } from './entities/dto/class-response.dto';
 
 @Injectable()
 export class ClassService {
@@ -12,38 +17,123 @@ export class ClassService {
     @InjectRepository(Class)
     private readonly classRepository: Repository<Class>,
     private readonly contentLevelService: ContentLevelService,
+    private readonly teacherSerice: TeacherService,
+    private readonly studentService: StudentService,
   ) {}
 
   findAll(): Promise<Class[]> {
     return this.classRepository.find();
   }
 
-  findOne(id: string): Promise<Class | null> {
-    return this.classRepository.findOneBy({ id });
+  async findOne(id: string): Promise<Class | null> {
+    try {
+      return this.classRepository.findOneBy({ id });
+    } catch (error) {
+      throw new NotFoundException(
+        `Class with id ${id} not found. Error: ${error}`,
+      );
+    }
   }
 
-  getClassInfo(id: string): Promise<Class | null> {
-    return this.classRepository.findOne({
+  async getClassInfo(id: string): Promise<FindClassInformationResponseDto> {
+    const classData = await this.classRepository.findOne({
       where: { id },
       relations: ['teacher', 'students', 'currentLevel', 'completedLevels'],
     });
+
+    if (!classData) {
+      throw new NotFoundException(`Class with id ${id} not found`);
+    }
+
+    console.log(classData);
+
+    return {
+      id: classData.id,
+      name: classData.name,
+      automated: classData.automated,
+      teacher: {
+        id: classData.teacher.id,
+        name: classData.teacher.name,
+        email: classData.teacher.email,
+      },
+      students: classData.students.map((student) => ({
+        id: student.id,
+        name: student.name,
+      })),
+      currentLevel: {
+        id: classData.currentLevel.id,
+        lessonNumber: classData.currentLevel.lessonNumber,
+      },
+      completedLevels: classData.completedLevels.map((level) => ({
+        id: level.id,
+        lessonNumber: level.lessonNumber,
+      })),
+    };
   }
 
-  createClass = async (body): Promise<Class[] | any> => {
-    const { class: classData } = body;
-    const newClass = this.classRepository.create(classData);
-    return this.classRepository.save(newClass);
-  };
+  // Create a new class
+  async createClass(createClassDto: CreateClassDto): Promise<ClassResponseDto> {
+    // Find related entities
+    const teacher = await this.teacherSerice.findOne(createClassDto.teacherId);
 
-  async remove(id: number): Promise<void> {
-    await this.classRepository.delete(id);
+    if (!teacher) {
+      throw new NotFoundException(
+        `Teacher with ID ${createClassDto.teacherId} not found`,
+      );
+    }
+
+    const currentLevel = await this.contentLevelService.findOne(
+      createClassDto.currentLevelId,
+    );
+
+    if (!currentLevel) {
+      throw new NotFoundException(
+        `Content level with ID ${createClassDto.currentLevelId} not found`,
+      );
+    }
+
+    // Create new class
+    const newClass = this.classRepository.create({
+      name: createClassDto.name,
+      automated: createClassDto.automated ?? true,
+      teacher,
+      currentLevel,
+    });
+
+    // Add students if provided
+    if (createClassDto.studentIds && createClassDto.studentIds.length > 0) {
+      const students = await this.studentService.findByIds(
+        createClassDto.studentIds,
+      );
+      newClass.students = students;
+    }
+
+    // Add completed levels if provided
+    if (
+      createClassDto.completedLevelIds &&
+      createClassDto.completedLevelIds.length > 0
+    ) {
+      const completedLevels = await this.contentLevelService.findByIds(
+        createClassDto.completedLevelIds,
+      );
+      newClass.completedLevels = completedLevels;
+    }
+
+    // Save and return
+    const savedClass = await this.classRepository.save(newClass);
+    return {
+      id: savedClass.id,
+      name: savedClass.name,
+      automated: savedClass.automated,
+    };
   }
 
-  /**
-   *
-   *  --- Advanced functions section ---
-   *
-   **/
+  async remove(id: string): Promise<void> {
+    const classToDelete = await this.findOne(id);
+    if (classToDelete) {
+      await this.classRepository.delete(classToDelete.id);
+    }
+  }
 
   // Advance class level
   async advanceToNextLevel(classId: string): Promise<Class> {

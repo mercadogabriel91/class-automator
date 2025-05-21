@@ -53,4 +53,18 @@ export class StudentService {
       id,
     };
   }
+
+  async findByIds(ids: string[]): Promise<Student[]> {
+    const studentList: Student[] = [];
+    for (const id of ids) {
+      const student = await this.studentRepository.findOne({ where: { id } });
+
+      if (!student) {
+        throw new NotFoundException(`Student with ID "${id}" not found`);
+      }
+
+      studentList.push(student);
+    }
+    return studentList;
+  }
 }
