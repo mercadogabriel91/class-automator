@@ -7,7 +7,10 @@ import { TeacherService } from '../teacher/teacher.service';
 import { StudentService } from '../student/student.service';
 // Entities
 import { Class } from './entities/class.entity';
-import { FindClassInformationResponseDto } from './entities/dto/common.class.dto';
+import {
+  FindClassInformationResponseDto,
+  DeleteClassResponseDto,
+} from './entities/dto/common.class.dto';
 import { CreateClassDto } from './entities/dto/create-class.dto';
 import { ClassResponseDto } from './entities/dto/class-response.dto';
 
@@ -27,7 +30,7 @@ export class ClassService {
 
   async findOne(id: string): Promise<Class | null> {
     try {
-      return this.classRepository.findOneBy({ id });
+      return this.classRepository.findOne({ where: { id } });
     } catch (error) {
       throw new NotFoundException(
         `Class with id ${id} not found. Error: ${error}`,
@@ -128,11 +131,21 @@ export class ClassService {
     };
   }
 
-  async remove(id: string): Promise<void> {
-    const classToDelete = await this.findOne(id);
-    if (classToDelete) {
-      await this.classRepository.delete(classToDelete.id);
+  async remove(id: string): Promise<DeleteClassResponseDto> {
+    const classToDelete = await this.classRepository.findOne({ where: { id } });
+
+    if (!classToDelete) {
+      throw new NotFoundException(`Class with id ${id} not found`);
     }
+
+    const deleteResult = await this.classRepository.delete(classToDelete.id);
+
+    return new DeleteClassResponseDto(
+      true,
+      'Class deleted successfully',
+      id,
+      deleteResult.affected || 0,
+    );
   }
 
   // Advance class level

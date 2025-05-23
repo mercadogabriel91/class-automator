@@ -19,7 +19,10 @@ import {
 import { ClassService } from './class.service';
 // Entities
 import { Class } from './entities/class.entity';
-import { FindClassInformationResponseDto } from './entities/dto/common.class.dto';
+import {
+  FindClassInformationResponseDto,
+  DeleteClassResponseDto,
+} from './entities/dto/common.class.dto';
 import { CreateClassDto } from './entities/dto/create-class.dto';
 import { ClassResponseDto } from './entities/dto/class-response.dto';
 // Constants
@@ -66,7 +69,6 @@ export class ClassController {
     return this.classService.getClassInfo(id);
   }
 
-  
   @ApiOperation({ summary: 'Create a new class' })
   @ApiResponse({
     status: 201,
@@ -86,12 +88,19 @@ export class ClassController {
   })
   @ApiNotFoundResponse({ description: 'Class not found' })
   @Delete(':id')
-  remove(@Param('id') id: string): Promise<void> {
+  remove(@Param('id') id: string): Promise<DeleteClassResponseDto> {
     return this.classService.remove(id);
   }
 
+  @ApiOperation({ summary: 'Advance a class to the next level' })
+  @ApiResponse({
+    status: 200,
+    description: 'Class promoted.',
+    type: Class,
+  })
+  @ApiNotFoundResponse({ description: 'Class or level not found' })
   @Patch(CLASS_ENDPOINTS.ADVANCE)
-  advanceClassLevel(@Query('id') id: string): Promise<Class | string> {
+  advanceClassLevel(@Query('id') id: string): Promise<Class> {
     return this.classService.advanceToNextLevel(id);
   }
 }
