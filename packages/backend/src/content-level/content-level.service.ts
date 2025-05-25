@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 // Entities
 import { ContentLevel } from './entities/content-level.entity';
 import { CreateContentLevelDto } from './entities/dto/create-content-level.dto';
+import { DeleteContentLevelResponseDto } from './entities/dto/common-content-level.dto';
 
 @Injectable()
 export class ContentLevelService {
@@ -16,8 +17,15 @@ export class ContentLevelService {
     return this.contentLevelRepository.find();
   }
 
-  findOne(id: string): Promise<ContentLevel | null> {
-    return this.contentLevelRepository.findOneBy({ id });
+  async findOne(id: string): Promise<ContentLevel> {
+    const contentLevel = await this.contentLevelRepository.findOne({
+      where: { id },
+    });
+
+    if (!contentLevel) {
+      throw new NotFoundException(`ContentLevel with ID "${id}" not found`);
+    }
+    return contentLevel;
   }
 
   async create(contentLevel: CreateContentLevelDto): Promise<ContentLevel> {
@@ -25,8 +33,18 @@ export class ContentLevelService {
     return this.contentLevelRepository.save(newContentLevel);
   }
 
-  async remove(id: number): Promise<void> {
-    await this.contentLevelRepository.delete(id);
+  async remove(id: string): Promise<DeleteContentLevelResponseDto> {
+    const contentLevelToDelete = await this.findOne(id);
+    const deleteResult = await this.contentLevelRepository.delete(
+      contentLevelToDelete.id,
+    );
+
+    return new DeleteContentLevelResponseDto(
+      true,
+      'Content level deleted successfully',
+      id,
+      deleteResult.affected || 0,
+    );
   }
 
   async findByLessonNumber(lessonNumber: number) {
