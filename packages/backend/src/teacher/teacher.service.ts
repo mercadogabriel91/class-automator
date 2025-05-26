@@ -27,14 +27,14 @@ export class TeacherService {
   }
 
   async remove(id: string): Promise<DeleteTeacherResponseDto> {
-    try {
-      await this.teacherRepository.findOneBy({ id });
-    } catch (err) {
+    const teacherToDelete = await this.teacherRepository.findOneBy({ id });
+    
+    if (!teacherToDelete) {
       throw new NotFoundException(`Teacher with ID ${id} not found`);
     }
 
     try {
-      await this.teacherRepository.delete(id);
+      await this.teacherRepository.delete(teacherToDelete.id);
       return { message: `Teacher with ID ${id} successfully deleted` };
     } catch (error) {
       throw new Error(`Error deleting teacher with ID ${id}: ${error.message}`);

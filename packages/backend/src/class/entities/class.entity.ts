@@ -8,9 +8,9 @@ import {
 } from 'typeorm';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 // Entities
-import { Teacher } from 'src/teacher/entities/teacher.entity';
-import { Student } from 'src/student/entities/student.entity';
-import { ContentLevel } from 'src/content-level/entities/content-level.entity';
+import { Teacher } from '../../teacher/entities/teacher.entity';
+import { Student } from '../../student/entities/student.entity';
+import { ContentLevel } from '../../content-level/entities/content-level.entity';
 
 @Entity()
 export class Class {
