@@ -48,8 +48,6 @@ export class ClassService {
       throw new NotFoundException(`Class with id ${id} not found`);
     }
 
-    console.log(classData);
-
     return {
       id: classData.id,
       name: classData.name,
